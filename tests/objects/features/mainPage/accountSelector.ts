@@ -8,6 +8,7 @@ export class AccountSelector extends Feature {
             accountSelection: `.//*[@role="option" and ./*[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')="${account.toLowerCase()}"]]`,
         };
         await this.client.waitForVisible(selectors.account).click(selectors.account);
+        await this.sleep(2000); // slow windows computers will sometimes not render the element in time
         await this.client.waitForVisible(selectors.accountsVisible).click(selectors.accountSelection);
     }
 }

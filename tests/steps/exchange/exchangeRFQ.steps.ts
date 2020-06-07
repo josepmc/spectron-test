@@ -67,6 +67,7 @@ class ExchangeRFQ extends BaseTest {
         };
         await this.client.waitForExist(selectors[action]).click(selectors[action]);
         await this.client.waitForExist(selectors.modalLoaded);
+        await this.sleep(2000); // slow windows computers will sometimes not render the element in time
         await this.client.click(selectors[`${action}InModal`]);
         await this.client.waitForExist('.//body[not(.//*[contains(@class,"modal-content")])]');
     }

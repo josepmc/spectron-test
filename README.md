@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/risc40/spectron-tests/_apis/build/status/josepmc.spectron-test?branchName=master)](https://dev.azure.com/risc40/spectron-tests/_build/latest?definitionId=1&branchName=master)
+[![Build Status](https://dev.azure.com/josepmc/spectron-tests/_apis/build/status/josepmc.spectron-test?branchName=master)](https://dev.azure.com/josepmc/spectron-tests/_build?definitionId=1&branchName=master)
 
 # Introduction
 
