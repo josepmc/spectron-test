@@ -8,8 +8,8 @@ trigger:
 
 strategy:
     matrix:
-        #mac:
-        #  imageName: 'macos-latest'
+        # mac:
+        #     imageName: 'macos-latest'
         windows:
             imageName: 'windows-latest'
 
@@ -38,7 +38,7 @@ steps:
               curl -q -o TestApp.exe $(WINDOWS_APP_URL)
               7z x TestApp.exe -r -oTestApp1 -y > nul
               7z x "TestApp1/\$PLUGINSDIR/app-64.7z" -y -oTestApp > nul
-              APP_PATH="./TestApp/"`ls TestApp/*.exe`
+              APP_PATH="./"`ls TestApp/*.exe`
               echo "##vso[task.setvariable variable=APP_PATH]$APP_PATH"
       condition: eq( variables['Agent.OS'], 'Windows_NT' )
       displayName: Download Package Windows
