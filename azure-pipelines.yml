@@ -1,0 +1,53 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+strategy:
+  matrix:
+    mac:
+      imageName: 'macos-latest'
+    windows:
+      imageName: 'windows-latest'
+
+pool:
+  vmImage: $(imageName)
+
+
+steps:
+- task: UseNode@1
+  inputs:
+    version: '13.x'
+
+- script: |
+    yarn
+  displayName: 'Install dependencies'
+
+- script: |
+    wget $MAC_APP_URL -O TestApp.app
+    APP_PATH="./TestApp.app/Contents/MacOS/$(ls TestApp.app/Contents/MacOS)"
+    Write-Host "##vso[task.setvariable variable=APP_PATH]$APP_PATH"
+  condition: eq( variables['Agent.OS'], 'Darwin' )
+  displayName: Download Package
+
+- script: |
+    wget $WINDOWS_APP_URL -O TestApp.exe
+    Write-Host "##vso[task.setvariable variable=APP_PATH]./TestApp.exe"
+  condition: eq( variables['Agent.OS'], 'Windows_NT' )
+  displayName: Download Package
+
+- script: |
+    yarn test
+  displayName: Run Tests
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'reports/output.xml'
+    failTaskOnFailedTests: true
+    testRunTitle: 'Test App run'
+    buildPlatform: 'Mac OS'
+    buildConfiguration: 'Latest'
