@@ -4,69 +4,68 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+    - master
 
 strategy:
-  matrix:
-    #mac:
-    #  imageName: 'macos-latest'
-    windows:
-      imageName: 'windows-latest'
+    matrix:
+        #mac:
+        #  imageName: 'macos-latest'
+        windows:
+            imageName: 'windows-latest'
 
 pool:
-  vmImage: $(imageName)
-
+    vmImage: $(imageName)
 
 steps:
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
-      curl -q -o TestApp.dmg $(MAC_APP_URL)
-      hdiutil mount -mountpoint TestApp TestApp.dmg
-      cp -R TestApp/*.app TestApp.app
-      hdiutil unmount TestApp
-      APP_PATH="./TestApp.app/Contents/MacOS/"`ls TestApp.app/Contents/MacOS`
-      if [ $? -eq 1 ]; then exit 1; fi
-      echo "##vso[task.setvariable variable=APP_PATH]$APP_PATH"
-  condition: eq( variables['Agent.OS'], 'Darwin' )
-  displayName: Download Package MacOS
+    - task: Bash@3
+      inputs:
+          targetType: 'inline'
+          script: |
+              curl -q -o TestApp.dmg $(MAC_APP_URL)
+              hdiutil mount -mountpoint TestApp TestApp.dmg
+              cp -R TestApp/*.app TestApp.app
+              hdiutil unmount TestApp
+              APP_PATH="./TestApp.app/Contents/MacOS/"`ls TestApp.app/Contents/MacOS`
+              if [ $? -eq 1 ]; then exit 1; fi
+              echo "##vso[task.setvariable variable=APP_PATH]$APP_PATH"
+      condition: eq( variables['Agent.OS'], 'Darwin' )
+      displayName: Download Package MacOS
 
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
-      curl -q -o TestApp.exe $(WINDOWS_APP_URL)
-      7z x TestApp.exe -r -oTestApp1 -y > nul
-      7z x "TestApp1/\$PLUGINSDIR/app-64.7z" -y -oTestApp > nul
-      APP_PATH="./TestApp/"`ls TestApp/*.exe`
-      echo "##vso[task.setvariable variable=APP_PATH]./TestApp.exe"
-  condition: eq( variables['Agent.OS'], 'Windows_NT' )
-  displayName: Download Package Windows
+    - task: Bash@3
+      inputs:
+          targetType: 'inline'
+          script: |
+              curl -q -o TestApp.exe $(WINDOWS_APP_URL)
+              7z x TestApp.exe -r -oTestApp1 -y > nul
+              7z x "TestApp1/\$PLUGINSDIR/app-64.7z" -y -oTestApp > nul
+              APP_PATH="./TestApp/"`ls TestApp/*.exe`
+              echo "##vso[task.setvariable variable=APP_PATH]$APP_PATH"
+      condition: eq( variables['Agent.OS'], 'Windows_NT' )
+      displayName: Download Package Windows
 
-- task: UseNode@1
-  inputs:
-    version: '13.x'
+    - task: UseNode@1
+      inputs:
+          version: '13.x'
 
-- script: |
-    yarn
-  displayName: 'Install dependencies'
+    - script: |
+          yarn
+      displayName: 'Install dependencies'
 
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
-      export USER_LIST='$(USER_LIST)'
-      export URL="$(URL)"
-      yarn test
-      # Force the test results to be published
-      exit 0
-  displayName: Run Tests
+    - task: Bash@3
+      inputs:
+          targetType: 'inline'
+          script: |
+              export USER_LIST='$(USER_LIST)'
+              export URL="$(URL)"
+              yarn test
+              # Force the test results to be published
+              exit 0
+      displayName: Run Tests
 
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: 'reports/output.xml'
-    failTaskOnFailedTests: true
-    testRunTitle: 'Test App'
-    buildPlatform: $(imageName)
+    - task: PublishTestResults@2
+      inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: 'reports/output.xml'
+          failTaskOnFailedTests: true
+          testRunTitle: 'Test App'
+          buildPlatform: $(imageName)
