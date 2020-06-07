@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/risc40/spectron-tests/_apis/build/status/josepmc.spectron-test?branchName=master)](https://dev.azure.com/risc40/spectron-tests/_build/latest?definitionId=1&branchName=master)
+
 # Introduction
 
 This is a pet project for getting spectron and a normal browser to work together. Spectron uses WDIO underneath and requires a specific version of electron to run.

@@ -67,5 +67,5 @@ steps:
           testResultsFormat: 'JUnit'
           testResultsFiles: 'reports/output.xml'
           failTaskOnFailedTests: true
-          testRunTitle: 'Test App'
+          testRunTitle: 'Test App $(imageName)'
           buildPlatform: $(imageName)
