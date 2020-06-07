@@ -18,13 +18,6 @@ pool:
 
 
 steps:
-- task: UseNode@1
-  inputs:
-    version: '13.x'
-
-- script: |
-    yarn
-  displayName: 'Install dependencies'
 - task: Bash@3
   inputs:
     targetType: 'inline'
@@ -33,7 +26,7 @@ steps:
       APP_PATH="./TestApp.app/Contents/MacOS/"`ls TestApp.app/Contents/MacOS`
       echo "##vso[task.setvariable variable=APP_PATH]$APP_PATH"
   condition: eq( variables['Agent.OS'], 'Darwin' )
-  displayName: Download Package
+  displayName: Download Package MacOS
 
 - task: Bash@3
   inputs:
@@ -42,7 +35,15 @@ steps:
       curl -q -o TestApp.exe $(WINDOWS_APP_URL)
       echo "##vso[task.setvariable variable=APP_PATH]./TestApp.exe"
   condition: eq( variables['Agent.OS'], 'Windows_NT' )
-  displayName: Download Package
+  displayName: Download Package Windows
+
+- task: UseNode@1
+  inputs:
+    version: '13.x'
+
+- script: |
+    yarn
+  displayName: 'Install dependencies'
 
 - script: |
     export USER_LIST="$(USER_LIST)"
