@@ -29,9 +29,10 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      wget -q -O TestApp.app $MAC_APP_URL
+      curl -q -o TestApp.app $(MAC_APP_URL)
       APP_PATH="./TestApp.app/Contents/MacOS/$(ls TestApp.app/Contents/MacOS)"
-      Write-Host "##vso[task.setvariable variable=APP_PATH]$APP_PATH"
+      echo "##vso[task.setvariable variable=APP_PATH]$APP_PATH"
+    failOnStderr: true
   condition: eq( variables['Agent.OS'], 'Darwin' )
   displayName: Download Package
 
@@ -39,12 +40,15 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      wget -q -O TestApp.exe $WINDOWS_APP_URL
-      Write-Host "##vso[task.setvariable variable=APP_PATH]./TestApp.exe"
+      curl -q -o TestApp.exe $(WINDOWS_APP_URL)
+      echo "##vso[task.setvariable variable=APP_PATH]./TestApp.exe"
+    failOnStderr: true
   condition: eq( variables['Agent.OS'], 'Windows_NT' )
   displayName: Download Package
 
 - script: |
+    export USER_LIST="$(USER_LIST)"
+    export URL="$(URL)"
     yarn test
   displayName: Run Tests
 
