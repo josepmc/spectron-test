@@ -6,7 +6,7 @@
     "license": "UNLICENSED",
     "scripts": {
         "lint": "yarn lint:prettier && yarn lint:eslint",
-        "lint:prettier": "prettier \"**/*\"",
+        "lint:prettier": "prettier --check \"**/*.*\"",
         "lint:eslint": "eslint \"**/*\"",
         "lint:ts": "tsc -p . -noEmit",
         "fix": "yarn fix:prettier && yarn fix:eslint",
@@ -22,8 +22,12 @@
         }
     },
     "lint-staged": {
-        "package.json": [
+        "*.{js,ts}": [
             "eslint --fix",
+            "prettier --write",
+            "git add"
+        ],
+        "*.{md,json}": [
             "prettier --write",
             "git add"
         ]
@@ -56,8 +60,12 @@
         "@types/node": "^14.0.11",
         "@types/puppeteer": "^3.0.0",
         "@types/webdriverio": "4.13.3",
+        "@typescript-eslint/eslint-plugin": "^3.1.0",
+        "@typescript-eslint/parser": "^2.30.0",
         "electron": "4.2.2",
         "eslint": "^7.2.0",
+        "eslint-plugin-prettier": "^3.1.3",
+        "eslint-config-prettier": "^3.1.3",
         "husky": "^4.2.5",
         "lint-staged": "^10.2.9",
         "prettier": "^2.0.5",

@@ -33,10 +33,10 @@ export class BaseTest extends SharedFns {
     protected set client(instance: Client<void>) {
         BaseTest._client = instance;
     }
-    protected setClient(desired: BrowserSelection) {
+    protected setClient(desired: BrowserSelection): void {
         switch (desired) {
             case BrowserSelection.App:
-                this.client = (this.internalApp.client as unknown) as any;
+                this.client = (this.internalApp.client as unknown) as Client<void>;
                 break;
             case BrowserSelection.Browser:
                 this.client = this.internalBrowser;

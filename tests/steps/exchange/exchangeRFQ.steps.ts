@@ -45,9 +45,6 @@ class ExchangeRFQ extends BaseTest {
     }
     @given(/the user sends the RFQ/)
     public async sendRFQ() {
-        const selectors = {
-            sendRFQ: 'button.primary-button',
-        };
         // The page has a very bad scrollable hierarchy
         // No javascript will trigger this button.. This is a *horrible* solution and needs to be revised (will only occur in electron sadly)
         await this.client.keys(['Tab']);

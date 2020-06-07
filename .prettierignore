@@ -3,3 +3,8 @@ node_modules
 output.json
 .DS_Store
 *.log
+*.app
+*.exe
+.*ignore
+yarn.lock
+*.feature

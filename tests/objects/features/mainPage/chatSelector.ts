@@ -4,7 +4,7 @@ import { Client } from 'webdriverio';
 import { ChatContent } from './chatContent';
 
 export class ChatItem extends Item {
-    public static selector: string = './/*[@class="room-item"]';
+    public static selector = './/*[@class="room-item"]';
     public get title(): string {
         return this.client
             .elementIdElement(this.element.ELEMENT, './/*[contains(@class, "room-item__body__title")]')
@@ -29,7 +29,7 @@ export class ChatItem extends Item {
 export class ChatSelector extends Feature {
     public async selectChat(user: string): Promise<ChatContent> {
         const chats = await ChatItem.GetAllItems(ChatItem);
-        for (let chat of chats) {
+        for (const chat of chats) {
             if ((await chat.user) === user) {
                 await chat.select();
                 await this.client.waitForExist(ChatContent.selector);

@@ -26,7 +26,7 @@ export class Sidebar extends Feature {
         await this.client.$(item.page).waitForExist();
     }
     public async current(): Promise<SideSelection> {
-        for (let [idx, { sidebar }] of Object.entries(this.selectors)) {
+        for (const [idx, { sidebar }] of Object.entries(this.selectors)) {
             const attr = await this.getAttribute(sidebar, 'class');
             if (attr.indexOf('active') != -1) return idx as SideSelection;
         }

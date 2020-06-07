@@ -48,13 +48,13 @@ export abstract class SharedFns {
      */
     public async clickJS(selector: string): Promise<void> {
         await this.client.execute((selector) => {
-            var event = new MouseEvent('click', {
+            const event = new MouseEvent('click', {
                 view: window,
                 bubbles: true,
                 cancelable: false,
             });
-            var cb = document.querySelector(selector);
-            var canceled = !cb.dispatchEvent(event);
+            const cb = document.querySelector(selector);
+            const canceled = !cb.dispatchEvent(event);
             if (canceled) {
                 // preventDefault was called and the event cancelled
                 return false;

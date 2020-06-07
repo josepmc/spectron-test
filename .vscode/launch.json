@@ -10,16 +10,9 @@
             "name": "Launch Program",
             "program": "${workspaceFolder}/node_modules/gulp/bin/gulp",
             "cwd": "${workspaceFolder}",
-            "args": [
-                "test",
-                "--steps",
-                "tests/features/exchange/exchange.feature"
-            ],
+            "args": ["test", "--steps", "tests/features/exchange/exchange.feature"],
             "console": "integratedTerminal",
-            "skipFiles": [
-                "node_modules/**/*",
-                "<node_internals>/**/*"
-            ],
+            "skipFiles": ["node_modules/**/*", "<node_internals>/**/*"],
             "env": {
                 "NODE_DEBUG": "test"
             }
