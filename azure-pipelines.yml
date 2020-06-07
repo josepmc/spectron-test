@@ -8,8 +8,8 @@ trigger:
 
 strategy:
     matrix:
-        # mac:
-        #     imageName: 'macos-latest'
+        mac:
+            imageName: 'macos-latest'
         windows:
             imageName: 'windows-latest'
 
