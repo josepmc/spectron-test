@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const { argv } = require('yargs');
-const cucumber = require('gulp-cucumber');
+const gulpCucumber = require('gulp-cucumber');
 const { resolve } = require('path');
 const { removeSync, mkdirpSync } = require('fs-extra');
 require('./register');
@@ -9,9 +9,9 @@ const reportDir = process.env.REPORT_DIR || (process.env.REPORT_DIR = resolve(__
 removeSync(reportDir);
 mkdirpSync(reportDir);
 
-gulp.task('test', () => {
+function cucumber() {
     return gulp.src(process.env.STEPS || argv.steps || 'tests/**/*.feature').pipe(
-        cucumber({
+        gulpCucumber({
             steps: ['./tests/**/*.ts'],
             format: [
                 require.resolve('cucumber-pretty'),
@@ -24,4 +24,11 @@ gulp.task('test', () => {
             runOptions: ['--format-options', '{"colorsEnabled": true, "scenarioAsStep": true}'],
         }),
     );
-});
+}
+
+function done(done) {
+    done();
+    process.exit(0);
+}
+
+exports.test = exports.default = gulp.series(cucumber, done);

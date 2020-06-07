@@ -1,5 +1,5 @@
 import { binding, before, after } from 'cucumber-tsflow';
-import { BaseTest } from './base';
+import { BaseTest, BrowserSelection } from './base';
 import { setDefaultTimeout, BeforeAll, AfterAll } from 'cucumber';
 import { Application } from 'spectron';
 import * as webdriver from 'webdriverio';
@@ -10,8 +10,9 @@ import { threadSleep } from './sharedFns';
 setDefaultTimeout(5 * 60 * 1000);
 const service = require('wdio-chromedriver-service/launcher');
 const getPort = require('get-port');
+const kill = require('tree-kill');
 const verbose = (process.env.NODE_DEBUG || '').indexOf('test') != -1;
-const waitforTimeout = 2 * 60 * 1000;
+const waitforTimeout = 20 * 1000;
 
 interface WDOptions extends WebdriverIO.Options {
     // Not documented on the typings
@@ -77,7 +78,7 @@ class Setup extends BaseTest {
                         chromeOptions: {
                             binary: executablePath(),
                             // setSize doesn't always work, this is the best workaround
-                            args: ['--start-fullscreen', '--disable-dev-shm-usage'].concat(extraArgs),
+                            args: ['--disable-dev-shm-usage'].concat(extraArgs),
                         },
                     },
                 };
@@ -85,6 +86,7 @@ class Setup extends BaseTest {
                 const browser = webdriver.remote(options);
                 await browser.init();
                 this.internalBrowser = browser;
+                await this.internalBrowser.windowHandleMaximize();
                 return;
             } catch (error) {
                 console.error(`Error while starting browser: ${error}`);
@@ -110,6 +112,7 @@ class Setup extends BaseTest {
                 this.internalApp = await app.start();
                 await this.internalApp.browserWindow.maximize();
                 await this.internalApp.browserWindow.setSize(1680, 1050);
+                await this.setClient(BrowserSelection.App);
                 return;
             } catch (error) {
                 console.error(`Error while starting app: ${error}`);
@@ -120,7 +123,9 @@ class Setup extends BaseTest {
     @after()
     public async tearDown() {
         try {
-            await this.internalApp.stop();
+            // Required for windows
+            const pid = await (this.internalApp.mainProcess as any).pid();
+            await kill(pid);
         } catch (error) {}
         try {
             // WDIO v4 will close the browser like this, but reject the promise

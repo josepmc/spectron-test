@@ -11,6 +11,7 @@ We need to install electron as a devDependency, and the old version of WDIO has 
 -   This project includes a sample on how page objects should be implemented and would look like. Improve upon these and create a full PO/FO structure.
 -   Improve the selectors used as right now there's no testid's present
 -   The page used for this project has a bug by which it will reload itself if the browser has no cache (only occurs in Browsers)
+-   Likely, due to the version of spectron/chromedriver, there will be a couple of conhost.exe displayed when running the tests on Windows. This should be solved when upgrading to a newer version.
 
 ## How to run
 

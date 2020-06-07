@@ -33,13 +33,16 @@ export class BaseTest extends SharedFns {
     protected set client(instance: Client<void>) {
         BaseTest._client = instance;
     }
-    protected setClient(desired: BrowserSelection): void {
+    protected async setClient(desired: BrowserSelection): Promise<void> {
         switch (desired) {
             case BrowserSelection.App:
                 this.client = (this.internalApp.client as unknown) as Client<void>;
+                await this.internalApp.browserWindow.show();
                 break;
             case BrowserSelection.Browser:
                 this.client = this.internalBrowser;
+                await this.internalApp.browserWindow.hide();
+                await this.client.window((await this.client.windowHandle()).value);
                 break;
             default:
                 throw new Error(`Core: Can't set control, unknown browser ${desired}`);
