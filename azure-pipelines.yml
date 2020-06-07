@@ -25,17 +25,22 @@ steps:
 - script: |
     yarn
   displayName: 'Install dependencies'
-
-- script: |
-    wget $MAC_APP_URL -O TestApp.app
-    APP_PATH="./TestApp.app/Contents/MacOS/$(ls TestApp.app/Contents/MacOS)"
-    Write-Host "##vso[task.setvariable variable=APP_PATH]$APP_PATH"
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      wget -q -O TestApp.app $MAC_APP_URL
+      APP_PATH="./TestApp.app/Contents/MacOS/$(ls TestApp.app/Contents/MacOS)"
+      Write-Host "##vso[task.setvariable variable=APP_PATH]$APP_PATH"
   condition: eq( variables['Agent.OS'], 'Darwin' )
   displayName: Download Package
 
-- script: |
-    wget $WINDOWS_APP_URL -O TestApp.exe
-    Write-Host "##vso[task.setvariable variable=APP_PATH]./TestApp.exe"
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      wget -q -O TestApp.exe $WINDOWS_APP_URL
+      Write-Host "##vso[task.setvariable variable=APP_PATH]./TestApp.exe"
   condition: eq( variables['Agent.OS'], 'Windows_NT' )
   displayName: Download Package
 
