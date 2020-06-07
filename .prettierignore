@@ -8,3 +8,5 @@ output.json
 .*ignore
 yarn.lock
 *.feature
+*.dmg
+reports

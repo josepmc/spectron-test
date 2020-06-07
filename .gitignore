@@ -5,3 +5,5 @@ output.json
 *.log
 *.app
 *.exe
+*.dmg
+reports

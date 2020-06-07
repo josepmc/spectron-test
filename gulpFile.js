@@ -21,7 +21,7 @@ gulp.task('test', () => {
             ],
             support: [],
             compiler: './register.js',
-            runOptions: ['"--format-options={\\"colorsEnabled\\":true}"'],
+            runOptions: ['--format-options', '{"colorsEnabled": true, "scenarioAsStep": true}'],
         }),
     );
 });
