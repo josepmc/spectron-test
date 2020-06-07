@@ -7,6 +7,7 @@ trigger:
     - master
 
 strategy:
+    maxParallel: 1
     matrix:
         mac:
             imageName: 'macos-latest'
