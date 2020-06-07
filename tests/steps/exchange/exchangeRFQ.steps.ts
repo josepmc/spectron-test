@@ -24,6 +24,7 @@ class ExchangeRFQ extends BaseTest {
         // Modal dialog will appear now
         await this.client.waitForExist(selectors.modalLoaded);
         await this.client.click(selectors.cf); //CF
+        await this.sleep(1000); // slow computers may take some time
         await this.client.waitForEnabled(selectors.future).click(selectors.future); //Future
         // account is a dropdown
         await new AccountSelector().selectAccount(user.profileId);
