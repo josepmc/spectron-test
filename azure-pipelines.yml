@@ -45,10 +45,13 @@ steps:
     yarn
   displayName: 'Install dependencies'
 
-- script: |
-    export USER_LIST="$(USER_LIST)"
-    export URL="$(URL)"
-    yarn test
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      export USER_LIST="$(USER_LIST)"
+      export URL="$(URL)"
+      yarn test
   displayName: Run Tests
 
 - task: PublishTestResults@2
