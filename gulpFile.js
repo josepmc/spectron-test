@@ -16,7 +16,7 @@ gulp.task('test', () => {
             format: [
                 require.resolve('cucumber-pretty'),
                 `${require.resolve('cucumber-junit-formatter')}:${
-                    process.env.OUTPUT || argv.output || resolve(reportDir, 'output.json')
+                    process.env.OUTPUT || argv.output || resolve(reportDir, 'output.xml')
                 }`,
             ],
             support: [],
