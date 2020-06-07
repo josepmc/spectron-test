@@ -30,9 +30,8 @@ steps:
     targetType: 'inline'
     script: |
       curl -q -o TestApp.app $(MAC_APP_URL)
-      APP_PATH="./TestApp.app/Contents/MacOS/$(ls TestApp.app/Contents/MacOS)"
+      APP_PATH="./TestApp.app/Contents/MacOS/"`ls TestApp.app/Contents/MacOS`
       echo "##vso[task.setvariable variable=APP_PATH]$APP_PATH"
-    failOnStderr: true
   condition: eq( variables['Agent.OS'], 'Darwin' )
   displayName: Download Package
 
@@ -42,7 +41,6 @@ steps:
     script: |
       curl -q -o TestApp.exe $(WINDOWS_APP_URL)
       echo "##vso[task.setvariable variable=APP_PATH]./TestApp.exe"
-    failOnStderr: true
   condition: eq( variables['Agent.OS'], 'Windows_NT' )
   displayName: Download Package
 
